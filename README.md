@@ -1,6 +1,7 @@
 # esp8266_p1meter
 
-Software for the ESP2866 that sends P1 smart meter data to an mqtt broker (with OTA firmware updates)
+Software for the ESP2866 that sends P1 smart meter data to an mqtt broker in a JSON format that is used by ![mr-manuel/venus-os_dbus-mqtt-grid](https://github.com/mr-manuel/venus-os_dbus-mqtt-grid).
+This makes it possible to use a you P1 smart meter in stead of, for example, VM-3P75CT. 
 
 ## about this fork
 This fork (tries) to add support for the `Landys and Gyr E360` smartmeter (DSMR5.0)
@@ -68,39 +69,44 @@ When using a 6 pin cable you can use the power source provided by the meter.
 
 ## Data Sent
 
-All metrics are send to their own MQTT topic.
-The software sends out to the following MQTT topics:
+The nessasery metrics are put in a JSON Structure.
+The software sends out to the a topic what can be configured in the settings.h file
 
 ```
-sensors/power/p1meter/consumption_low_tarif 2209397
-sensors/power/p1meter/consumption_high_tarif 1964962
-sensors/power/p1meter/returndelivery_low_tarif 2209397
-sensors/power/p1meter/returndelivery_high_tarif 1964962
-sensors/power/p1meter/actual_consumption 313
-sensors/power/p1meter/actual_returndelivery 0
-sensors/power/p1meter/l1_instant_power_usage 313
-sensors/power/p1meter/l2_instant_power_usage 0
-sensors/power/p1meter/l3_instant_power_usage 0
-sensors/power/p1meter/l1_instant_power_current 1000
-sensors/power/p1meter/l2_instant_power_current 0
-sensors/power/p1meter/l3_instant_power_current 0
-sensors/power/p1meter/l1_voltage 233
-sensors/power/p1meter/l2_voltage 0
-sensors/power/p1meter/l3_voltage 0
-sensors/power/p1meter/gas_meter_m3 968922
-sensors/power/p1meter/actual_tarif_group 2
-sensors/power/p1meter/short_power_outages 3
-sensors/power/p1meter/long_power_outages 1
-sensors/power/p1meter/short_power_drops 0
-sensors/power/p1meter/short_power_peaks 0
+{
+    "grid": {
+        "power": 0.0,
+        "voltage": 0.0,
+        "current": 0.0,
+        "energy_forward": 0.0,
+        "energy_reverse": 0.0,
+        "L1": {
+            "power": 0.0,
+            "voltage": 0.0,
+            "current": 0.0,
+            "frequency": 0.0000,
+            "energy_forward": 0.0,
+            "energy_reverse": 0.0
+        },
+        "L2": {
+            "power": 0.0,
+            "voltage": 0.0,
+            "current": 0.0,
+            "frequency": 0.0000,
+            "energy_forward": 0.0,
+            "energy_reverse": 0.0
+        },
+        "L3": {
+            "power": 0.0,
+            "voltage": 0.0,
+            "current": 0.0,
+            "frequency": 0.0000,
+            "energy_forward": 0.0,
+            "energy_reverse": 0.0
+        }
+    }
+}
 ```
-
-## Home Assistant Configuration
-
-Use this [example](https://raw.githubusercontent.com/daniel-jong/esp8266_p1meter/master/assets/p1_sensors.yaml) for home assistant's `sensor.yaml`
-
-The automatons are yours to create.
-And always remember that sending alerts in case of a power outtage only make sense when you own a UPS battery :)
 
 ## Thanks to
 
