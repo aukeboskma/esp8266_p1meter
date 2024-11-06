@@ -1,7 +1,6 @@
 # esp8266_p1meter
 
-Software for the ESP2866 that sends P1 smart meter data to an mqtt broker in a JSON format that is used by ![mr-manuel/venus-os_dbus-mqtt-grid](https://github.com/mr-manuel/venus-os_dbus-mqtt-grid).
-This makes it possible to use a you P1 smart meter in stead of, for example, VM-3P75CT. 
+Software for the ESP2866 that sends P1 smart meter data to an mqtt broker in a JSON format that is used by ![mr-manuel/venus-os_dbus-mqtt-grid](https://github.com/mr-manuel/venus-os_dbus-mqtt-grid). The script emulates a physical Grid/Genset/AC Load Meter in Venus OS. This makes it possible to use a you P1 smart meter in stead of, for example, VM-3P75CT. 
 
 ## about this fork
 This fork (tries) to add support for the `Landys and Gyr E360` smartmeter (DSMR5.0)
