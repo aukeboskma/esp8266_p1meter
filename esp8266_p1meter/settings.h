@@ -29,8 +29,8 @@
 // * MQTT network settings
 #define MQTT_MAX_RECONNECT_TRIES 10
 
-// * MQTT root topic
-#define MQTT_ROOT_TOPIC "sensors/power/p1meter"
+// * MQTT topic for JSON data publishing
+#define MQTT_JSON_TOPIC "sensors/power/p1meter/json"
 
 // * MQTT Last reconnection counter
 long LAST_RECONNECT_ATTEMPT = 0;
