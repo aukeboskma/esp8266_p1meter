@@ -137,32 +137,24 @@ void send_data_to_broker()
     doc["grid"]["power"] = ACTUAL_CONSUMPTION / 1000.0;
     doc["grid"]["voltage"] = (L1_VOLTAGE + L2_VOLTAGE + L3_VOLTAGE) / 3.0;
     doc["grid"]["current"] = (L1_INSTANT_POWER_CURRENT + L2_INSTANT_POWER_CURRENT + L3_INSTANT_POWER_CURRENT) / 3.0;
-    doc["grid"]["energy_forward"] = CONSUMPTION_LOW_TARIF / 1000.0;
-    doc["grid"]["energy_reverse"] = RETURNDELIVERY_LOW_TARIF / 1000.0;
 
     // Voeg L1 toe
     doc["grid"]["L1"]["power"] = L1_INSTANT_POWER_USAGE / 1000.0;
     doc["grid"]["L1"]["voltage"] = L1_VOLTAGE;
     doc["grid"]["L1"]["current"] = L1_INSTANT_POWER_CURRENT;
-    doc["grid"]["L1"]["frequency"] = 0.0; // frequentie wordt niet gemeten
-    doc["grid"]["L1"]["energy_forward"] = CONSUMPTION_LOW_TARIF / 1000.0;
-    doc["grid"]["L1"]["energy_reverse"] = RETURNDELIVERY_LOW_TARIF / 1000.0;
+    doc["grid"]["L1"]["frequency"] = 50.0; // frequentie wordt niet gemeten
 
     // Voeg L2 toe
     doc["grid"]["L2"]["power"] = L2_INSTANT_POWER_USAGE / 1000.0;
     doc["grid"]["L2"]["voltage"] = L2_VOLTAGE;
     doc["grid"]["L2"]["current"] = L2_INSTANT_POWER_CURRENT;
-    doc["grid"]["L2"]["frequency"] = 0.0; // frequentie wordt niet gemeten
-    doc["grid"]["L2"]["energy_forward"] = CONSUMPTION_HIGH_TARIF / 1000.0;
-    doc["grid"]["L2"]["energy_reverse"] = RETURNDELIVERY_HIGH_TARIF / 1000.0;
+    doc["grid"]["L2"]["frequency"] = 50.0; // frequentie wordt niet gemeten
 
     // Voeg L3 toe
     doc["grid"]["L3"]["power"] = L3_INSTANT_POWER_USAGE / 1000.0;
     doc["grid"]["L3"]["voltage"] = L3_VOLTAGE;
     doc["grid"]["L3"]["current"] = L3_INSTANT_POWER_CURRENT;
-    doc["grid"]["L3"]["frequency"] = 0.0; // frequentie wordt niet gemeten
-    doc["grid"]["L3"]["energy_forward"] = 0.0; // Dit kan worden aangepast als er een specifieke waarde is
-    doc["grid"]["L3"]["energy_reverse"] = 0.0;
+    doc["grid"]["L3"]["frequency"] = 50.0; // frequentie wordt niet gemeten
 
     // Serialiseer het JSON-document naar een string
     char payload[512];
