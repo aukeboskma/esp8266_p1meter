@@ -169,7 +169,7 @@ void send_data_to_broker()
     serializeJson(doc, payload);
 
     // Verzend het JSON-bericht naar de MQTT-broker
-    send_mqtt_message("N/2ccf675a0c0a/grid", payload);
+    mqtt_client.publish(MQTT_JSON_TOPIC, payload, n);
 }
 
 // **********************************
