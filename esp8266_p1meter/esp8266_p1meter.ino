@@ -8,6 +8,7 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include <PubSubClient.h>
+#include <ArduinoJson.h>
 
 // * Include settings
 #include "settings.h"
@@ -129,30 +130,46 @@ void send_metric(String name, long metric)
 
 void send_data_to_broker()
 {
-    send_metric("consumption_low_tarif", CONSUMPTION_LOW_TARIF);
-    send_metric("consumption_high_tarif", CONSUMPTION_HIGH_TARIF);
-    send_metric("returndelivery_low_tarif", RETURNDELIVERY_LOW_TARIF);
-    send_metric("returndelivery_high_tarif", RETURNDELIVERY_HIGH_TARIF);
-    send_metric("actual_consumption", ACTUAL_CONSUMPTION);
-    send_metric("actual_returndelivery", ACTUAL_RETURNDELIVERY);
+    // Creëer een JSON-document
+    StaticJsonDocument<512> doc;
 
-    send_metric("l1_instant_power_usage", L1_INSTANT_POWER_USAGE);
-    send_metric("l2_instant_power_usage", L2_INSTANT_POWER_USAGE);
-    send_metric("l3_instant_power_usage", L3_INSTANT_POWER_USAGE);
-    send_metric("l1_instant_power_current", L1_INSTANT_POWER_CURRENT);
-    send_metric("l2_instant_power_current", L2_INSTANT_POWER_CURRENT);
-    send_metric("l3_instant_power_current", L3_INSTANT_POWER_CURRENT);
-    send_metric("l1_voltage", L1_VOLTAGE);
-    send_metric("l2_voltage", L2_VOLTAGE);
-    send_metric("l3_voltage", L3_VOLTAGE);
-    
-    send_metric("gas_meter_m3", GAS_METER_M3);
+    // Voeg gridinformatie toe
+    doc["grid"]["power"] = ACTUAL_CONSUMPTION / 1000.0;
+    doc["grid"]["voltage"] = (L1_VOLTAGE + L2_VOLTAGE + L3_VOLTAGE) / 3.0;
+    doc["grid"]["current"] = (L1_INSTANT_POWER_CURRENT + L2_INSTANT_POWER_CURRENT + L3_INSTANT_POWER_CURRENT) / 3.0;
+    doc["grid"]["energy_forward"] = CONSUMPTION_LOW_TARIF / 1000.0;
+    doc["grid"]["energy_reverse"] = RETURNDELIVERY_LOW_TARIF / 1000.0;
 
-    send_metric("actual_tarif_group", ACTUAL_TARIF);
-    send_metric("short_power_outages", SHORT_POWER_OUTAGES);
-    send_metric("long_power_outages", LONG_POWER_OUTAGES);
-    send_metric("short_power_drops", SHORT_POWER_DROPS);
-    send_metric("short_power_peaks", SHORT_POWER_PEAKS);
+    // Voeg L1 toe
+    doc["grid"]["L1"]["power"] = L1_INSTANT_POWER_USAGE / 1000.0;
+    doc["grid"]["L1"]["voltage"] = L1_VOLTAGE;
+    doc["grid"]["L1"]["current"] = L1_INSTANT_POWER_CURRENT;
+    doc["grid"]["L1"]["frequency"] = 0.0; // frequentie wordt niet gemeten
+    doc["grid"]["L1"]["energy_forward"] = CONSUMPTION_LOW_TARIF / 1000.0;
+    doc["grid"]["L1"]["energy_reverse"] = RETURNDELIVERY_LOW_TARIF / 1000.0;
+
+    // Voeg L2 toe
+    doc["grid"]["L2"]["power"] = L2_INSTANT_POWER_USAGE / 1000.0;
+    doc["grid"]["L2"]["voltage"] = L2_VOLTAGE;
+    doc["grid"]["L2"]["current"] = L2_INSTANT_POWER_CURRENT;
+    doc["grid"]["L2"]["frequency"] = 0.0; // frequentie wordt niet gemeten
+    doc["grid"]["L2"]["energy_forward"] = CONSUMPTION_HIGH_TARIF / 1000.0;
+    doc["grid"]["L2"]["energy_reverse"] = RETURNDELIVERY_HIGH_TARIF / 1000.0;
+
+    // Voeg L3 toe
+    doc["grid"]["L3"]["power"] = L3_INSTANT_POWER_USAGE / 1000.0;
+    doc["grid"]["L3"]["voltage"] = L3_VOLTAGE;
+    doc["grid"]["L3"]["current"] = L3_INSTANT_POWER_CURRENT;
+    doc["grid"]["L3"]["frequency"] = 0.0; // frequentie wordt niet gemeten
+    doc["grid"]["L3"]["energy_forward"] = 0.0; // Dit kan worden aangepast als er een specifieke waarde is
+    doc["grid"]["L3"]["energy_reverse"] = 0.0;
+
+    // Serialiseer het JSON-document naar een string
+    char payload[512];
+    serializeJson(doc, payload);
+
+    // Verzend het JSON-bericht naar de MQTT-broker
+    send_mqtt_message("N/2ccf675a0c0a/grid", payload);
 }
 
 // **********************************
