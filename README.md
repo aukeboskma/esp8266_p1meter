@@ -76,32 +76,24 @@ The software sends out to the a topic what can be configured in the settings.h f
     "grid": {
         "power": 0.0,
         "voltage": 0.0,
-        "current": 0.0,
-        "energy_forward": 0.0,
-        "energy_reverse": 0.0,
+        "current": 50.0
         "L1": {
             "power": 0.0,
             "voltage": 0.0,
             "current": 0.0,
-            "frequency": 0.0000,
-            "energy_forward": 0.0,
-            "energy_reverse": 0.0
+            "frequency": 50.0
         },
         "L2": {
             "power": 0.0,
             "voltage": 0.0,
             "current": 0.0,
-            "frequency": 0.0000,
-            "energy_forward": 0.0,
-            "energy_reverse": 0.0
+            "frequency": 50.0
         },
         "L3": {
             "power": 0.0,
             "voltage": 0.0,
             "current": 0.0,
-            "frequency": 0.0000,
-            "energy_forward": 0.0,
-            "energy_reverse": 0.0
+            "frequency": 50.0
         }
     }
 }
